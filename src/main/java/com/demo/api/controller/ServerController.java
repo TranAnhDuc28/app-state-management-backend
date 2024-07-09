@@ -53,8 +53,8 @@ public class ServerController {
     }
 
     @PostMapping("/save")
-    private ResponseEntity<Response> saveServer(@Valid @RequestBody Server server) {
-
+    private ResponseEntity<Response> saveServer(@Valid @RequestBody Server server) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
@@ -62,6 +62,18 @@ public class ServerController {
                         .status(CREATED)
                         .statusCode(CREATED.value())
                         .data(Map.of("server", serverService.create(server)))
+                        .build());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<Response> saveServer(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .message("Server deleted")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .data(Map.of("deleted", serverService.deleteById(id)))
                         .build());
     }
 
